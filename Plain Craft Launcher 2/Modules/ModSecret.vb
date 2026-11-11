@@ -144,10 +144,6 @@ Friend Module ModSecret
 
 #Region "更新"
 
-    Friend Sub UpdateCheckByButton()
-        Hint("该版本中不包含更新功能……")
-    End Sub
-
     Friend IsUpdateWaitingRestart As Boolean = False
     Public Sub UpdateRestart(TriggerRestartAndByEnd As Boolean)
     End Sub
@@ -172,7 +168,7 @@ Friend Module ModSecret
     ''' </summary>
     Public ServerConfig As JObject
 
-    Public ServerLoader As New LoaderTask(Of Integer, Integer)("PCL 配置更新", Sub() Logger.Info("该版本中不包含更新通知功能……"), Priority:=ThreadPriority.BelowNormal) With
+    Public ServerLoader As New LoaderTask(Of Integer, Integer)("PCL 配置更新", Sub() Logger.Info("该版本中不包含上游联网配置……"), Priority:=ThreadPriority.BelowNormal) With
         {.ReloadTimeout = 1000 * 60 * 60} '超时 1 小时
 
 #End Region

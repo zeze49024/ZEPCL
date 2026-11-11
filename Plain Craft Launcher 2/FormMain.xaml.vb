@@ -9,6 +9,9 @@ Public Class FormMain
     Private Sub ShowUpdateLog(LastVersion As Integer)
         Dim FeatureCount As Integer = 0, BugCount As Integer = 0
         Dim FeatureList As New List(Of KeyValuePair(Of Integer, String))
+        If LastVersion < 413 Then
+            FeatureList.Add(New KeyValuePair(Of Integer, String)(10, "重写启动器更新检测，更新源迁移至 ZEPCL 的 GitHub Releases。"))
+        End If
         '统计更新日志条目
         If BuildType = BuildTypes.Release Then
             If LastVersion < 411 Then 'Release 2.14.0.0
@@ -268,7 +271,7 @@ Public Class FormMain
         RunInNewThread(
         Sub()
             If MyMsgBox(Content, "PCL 已更新至" & VersionDisplay, "确定", "完整更新日志") = 2 Then
-                OpenWebsite("https://meloong.com/afd/a/LTCat?tab=feed")
+                OpenWebsite(LauncherReleasesUrl)
             End If
         End Sub, "UpdateLog Output")
     End Sub
@@ -281,6 +284,9 @@ Public Class FormMain
         FrmMain = Me
         FrmLaunchLeft = New PageLaunchLeft
         FrmLaunchRight = New PageLaunchRight
+        If Not Settings.HasSaved("SystemZepclAutoUpdate") AndAlso Settings.HasSaved("SystemSystemUpdate") Then
+            Settings.Set("SystemZepclAutoUpdate", Settings.Get(Of Integer)("SystemSystemUpdate") < 2)
+        End If
         '版本号改变
         Dim LastVersion As Integer = Settings.Get(Of Integer)("SystemLastVersionReg")
         If LastVersion < VersionCode Then
@@ -429,6 +435,7 @@ Public Class FormMain
                 DlClientListMojangLoader.Start(1) 'PCL 会同时根据这里的加载结果决定是否使用官方源进行下载
                 RunCountSub()
                 ServerLoader.Start()
+                CheckLauncherUpdate(False)
                 RunInNewThread(AddressOf TryClearTaskTemp, "TryClearTaskTemp", ThreadPriority.BelowNormal)
             Catch ex As Exception
                 Logger.Error(ex, "初始化加载池运行失败")

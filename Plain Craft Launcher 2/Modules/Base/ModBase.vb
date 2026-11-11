@@ -6,16 +6,18 @@ Public Module ModBase
 #Region "声明"
 
     '下列版本信息由更新器自动修改
-    Public Const VersionBaseName As String = "2.14.0.0" '显示用版本名
+    Public Const VersionBaseName As String = "2.14.0.1" '显示用版本名
+    Public Const VersionBetaSuffix As String = "-beta1" '正式版为空
+    Public Const VersionName As String = VersionBaseName & VersionBetaSuffix
     Public Const CommitHash As String = "" 'Commit Hash，由 GitHub Workflow 自动替换
 #If RELEASE Then
-    Public Const VersionCode As Integer = 411 '正式版
+    Public Const VersionCode As Integer = 413 '正式版
 #Else
-    Public Const VersionCode As Integer = 412 '快照版
+    Public Const VersionCode As Integer = 414 '快照版
 #End If
 
     '版本信息
-    Public Const VersionDisplay As String = BuildTypeDisplay & " " & VersionBaseName
+    Public Const VersionDisplay As String = If(VersionBetaSuffix <> "", "测试版", BuildTypeDisplay) & " " & VersionName
 #If DEBUG Then
     Public Const BuildTypeDisplay As String = "开发版"
     Public Const BuildType As BuildTypes = BuildTypes.Debug

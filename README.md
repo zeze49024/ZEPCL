@@ -7,6 +7,7 @@
 - `main` 是 ZEPCL 的开发主线。克隆后执行 `git submodule update --init --recursive`，检出对应的 `MeloongCore`。
 - `2.14.0.0` 是上游基线标签，对应 PCL 提交 `ade6e04`。本地使用 `upstream` 指向上游，使用 `origin` 指向本仓库。
 - ZEPCL 的发行标签使用 `zepcl-v<版本号>`。每次发布前确认更新日志并验证构建，随后在对应标签的 GitHub Release 中发布更新日志和构建产物。
+- 测试版标签使用 `zepcl-v<版本号>-beta<序号>`，并在 GitHub 标为预发行版。正式版检查正式发布，测试版同时检查这两个渠道。启动器发现新版后会提供 GitHub 下载入口。
 
 ## 上游项目 Plain Craft Launcher
 
