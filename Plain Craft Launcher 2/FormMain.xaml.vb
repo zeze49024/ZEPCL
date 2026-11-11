@@ -9,6 +9,9 @@ Public Class FormMain
     Private Sub ShowUpdateLog(LastVersion As Integer)
         Dim FeatureCount As Integer = 0, BugCount As Integer = 0
         Dim FeatureList As New List(Of KeyValuePair(Of Integer, String))
+        If LastVersion < 415 Then
+            FeatureList.Add(New KeyValuePair(Of Integer, String)(11, "优化部分UI"))
+        End If
         If LastVersion < 413 Then
             FeatureList.Add(New KeyValuePair(Of Integer, String)(10, "重写启动器更新检测，更新源迁移至 ZEPCL 的 GitHub Releases。"))
         End If
@@ -370,10 +373,6 @@ Public Class FormMain
         Resizer.addResizerRightDown(ResizerRB)
         Resizer.addResizerRightUp(ResizerRT)
         Resizer.addResizerUp(ResizerT)
-        'PLC 彩蛋
-        If RandomInteger(1, 1000) = 233 Then
-            ShapeTitleLogo.Data = New GeometryConverter().ConvertFromString("M26,29 v-25 h6 a7,7 180 0 1 0,14 h-6 M83,6.5 a10,11.5 180 1 0 0,18 M48,2.5 v24.5 h13.5")
-        End If
         '加载窗口
         ThemeRefreshMain()
         Try

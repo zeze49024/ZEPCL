@@ -4,6 +4,25 @@ Public Class MyExtraButton
     Public Event Click(sender As Object, e As MouseButtonEventArgs) '自定义事件
     Public Event RightClick(sender As Object, e As MouseButtonEventArgs)
 
+    Public Property UseDownloadCapsule As Boolean
+
+    Private Sub ConfigureDownloadCapsule() Handles Me.Loaded
+        If Not UseDownloadCapsule Then Return
+        Width = 310
+        PanColor.Visibility = Visibility.Collapsed
+        Path.Visibility = Visibility.Collapsed
+        DownloadCapsule.Visibility = Visibility.Visible
+    End Sub
+
+    Public Sub SetDownloadTask(Task As LoaderBase)
+        If Task Is Nothing Then Return
+        Dim TaskProgress = Task.Progress.Clamp(0, 1)
+        DownloadTitle.Text = Task.Name
+        DownloadProgress.Value = TaskProgress
+        DownloadPercent.Text = Math.Floor(TaskProgress * 100).ToString() & "%"
+        ToolTip = Task.Name & " · 打开任务管理"
+    End Sub
+
     '进度条
     Private _Progress As Double = 0
     Public Property Progress As Double
@@ -61,7 +80,7 @@ Public Class MyExtraButton
                     AniStart({
                         AaScaleTransform(Me, 0.3 - CType(RenderTransform, ScaleTransform).ScaleX, 500, 60, New AniEaseOutFluent(AniEasePower.Weak)),
                         AaScaleTransform(Me, 0.7, 500, 60, New AniEaseOutBack(AniEasePower.Weak)),
-                        AaHeight(Me, 50 - Height, 200,, New AniEaseOutFluent(AniEasePower.Weak))
+                        AaHeight(Me, If(UseDownloadCapsule, 70, 50) - Height, 200,, New AniEaseOutFluent(AniEasePower.Weak))
                     }, "MyExtraButton MainScale " & Uuid)
                 Else
                     '没了
@@ -166,6 +185,7 @@ Public Class MyExtraButton
     Private Const AnimationColorIn As Integer = 120
     Private Const AnimationColorOut As Integer = 150
     Public Sub RefreshColor() Handles PanClick.MouseEnter, PanClick.MouseLeave, Me.Loaded, Me.IsEnabledChanged
+        If UseDownloadCapsule Then Return
         Try
             If IsLoaded AndAlso AniControlEnabled = 0 Then '防止默认属性变更触发动画
 
@@ -201,6 +221,7 @@ Public Class MyExtraButton
     ''' 发出一圈波浪效果提示。
     ''' </summary>
     Public Sub Ribble()
+        If UseDownloadCapsule Then Return
         RunInUi(
         Sub()
             Dim Shape As New Border With {.CornerRadius = New CornerRadius(1000), .BorderThickness = New Thickness(0.001), .Opacity = 0.5, .RenderTransformOrigin = New Point(0.5, 0.5), .RenderTransform = New ScaleTransform()}

@@ -697,7 +697,12 @@ Restart:
             Else
                 LoaderTaskbarProgress = LoaderTaskbarProgress * 0.9 + NewProgress * 0.1
             End If
-            RunInUi(Sub() FrmMain.BtnExtraDownload.Progress = LoaderTaskbarProgress)
+            RunInUi(
+                Sub()
+                    Dim ActiveTask = LoaderTaskbar.FirstOrDefault(Function(Task) Task.Show AndAlso Task.State = LoadState.Loading)
+                    FrmMain.BtnExtraDownload.SetDownloadTask(ActiveTask)
+                    FrmMain.BtnExtraDownload.ShowRefresh()
+                End Sub)
             '更新任务栏信息
             If Not LoaderTaskbar.Any() OrElse LoaderTaskbarProgress = 1 Then
                 NewState = Shell.TaskbarItemProgressState.None
@@ -710,7 +715,6 @@ Restart:
             If LoaderTaskbarProgressLast <> NewState Then
                 LoaderTaskbarProgressLast = NewState
                 FrmMain.TaskbarItemInfo.ProgressState = NewState
-                FrmMain.BtnExtraDownload.ShowRefresh()
             End If
         Catch ex As Exception
             Logger.Error(ex, "刷新任务栏进度显示失败")

@@ -26,5 +26,47 @@
                 <ScaleTransform />
             </Path.RenderTransform>
         </Path>
+        <Border x:Name="DownloadCapsule" Visibility="Collapsed" CornerRadius="30" BorderBrush="#F5FFFFFF" BorderThickness="1" Padding="16,8,17,8">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#FAFFFFFF" Offset="0" />
+                    <GradientStop Color="#E8EDF5FF" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Effect>
+                <DropShadowEffect Color="#233D55" BlurRadius="16" ShadowDepth="2" Opacity="0.24" />
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Path Data="M 12,3 L 12,15 M 7,10 L 12,15 L 17,10 M 4,16 L 4,21 L 20,21 L 20,16"
+                      Stroke="{DynamicResource ColorBrush3}" StrokeThickness="2" StrokeStartLineCap="Round"
+                      StrokeEndLineCap="Round" StrokeLineJoin="Round" VerticalAlignment="Center" />
+                <Grid Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <DockPanel>
+                        <TextBlock x:Name="DownloadPercent" DockPanel.Dock="Right" Foreground="Black" Margin="8,0,0,0" FontSize="12" />
+                        <TextBlock x:Name="DownloadTitle" Foreground="Black" FontWeight="Bold" FontSize="13" TextTrimming="CharacterEllipsis" />
+                    </DockPanel>
+                    <ProgressBar x:Name="DownloadProgress" Grid.Row="1" Height="5" Margin="0,6,0,0"
+                                 Maximum="1" Background="#FFD9E3EE" Foreground="{DynamicResource ColorBrush3}">
+                        <ProgressBar.Template>
+                            <ControlTemplate TargetType="ProgressBar">
+                                <Grid>
+                                    <Border x:Name="PART_Track" Background="{TemplateBinding Background}" CornerRadius="2.5" />
+                                    <Border x:Name="PART_Indicator" HorizontalAlignment="Left"
+                                            Background="{TemplateBinding Foreground}" CornerRadius="2.5" />
+                                </Grid>
+                            </ControlTemplate>
+                        </ProgressBar.Template>
+                    </ProgressBar>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </Grid>
